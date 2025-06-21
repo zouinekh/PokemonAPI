@@ -66,3 +66,18 @@ export const updatePokemonById = async (
   
     return data as Pokemon;
   };
+
+export const fetchPokemonById = async (id: string): Promise<Pokemon | null> => {
+    const { data, error } = await supabase
+      .from('pokemon')
+      .select()
+      .eq('id', id)
+      .single();
+    console.log(data)
+    if (error) {
+      console.error('Supabase fetch error:', error.message);
+      return null;
+    }
+  
+    return data as Pokemon;
+  };
