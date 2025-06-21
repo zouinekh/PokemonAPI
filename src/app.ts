@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import pokemonRoutes from './routes/pokemon.route';
 import teamsRoutes from './routes/team.route';
 import typeRoutes from './routes/type.route';
+import battleRoute from './routes/battle.route'
 dotenv.config();
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use('/pokemons', pokemonRoutes);
 app.use('/teams',teamsRoutes)
 app.use('/types',typeRoutes)
+app.use('/battle',battleRoute)
 app.get('/', (req, res) => {
   res.send('Pokémon Battle API is running 🐱‍👤');
 });
