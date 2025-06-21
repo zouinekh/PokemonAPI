@@ -70,7 +70,17 @@ export const updatePokemonById = async (
 export const fetchPokemonById = async (id: string): Promise<Pokemon | null> => {
     const { data, error } = await supabase
       .from('pokemon')
-      .select()
+      .select(`
+        id,
+        name,
+        power,
+        life,
+        image,
+        type (
+          id,
+          name
+        )
+      `)
       .eq('id', id)
       .single();
     console.log(data)
@@ -79,5 +89,5 @@ export const fetchPokemonById = async (id: string): Promise<Pokemon | null> => {
       return null;
     }
   
-    return data as Pokemon;
+    return data as any;
   };
