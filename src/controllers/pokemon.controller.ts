@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { fetchPokemons, updatePokemonById } from '../services/pokemon.service';
+import { fetchPokemonById, fetchPokemons, updatePokemonById } from '../services/pokemon.service';
 import { PokemonQueryParams, PokemonUpdateInput } from '../models/pokemon.model';
 
 export const getPokemons = async (req: Request, res: Response) => {
@@ -43,3 +43,17 @@ export  const updatePokemon = async (req: Request, res: Response): Promise<void>
       res.status(500).json({ error: 'Internal Server Error' });
     }
   };
+
+export const getPokemonById = async (req: Request, res: Response) => {
+    try {
+      const id = req.params.id;
+      const pokemon = await fetchPokemonById(id);
+      if (!pokemon) {
+        res.status(404).json({ error: 'Pokémon not found' });
+      } else {
+        res.json(pokemon);
+      }
+    } catch (error) {
+      console.error('Error fetching Pokémon:', error);
+    }
+  }
