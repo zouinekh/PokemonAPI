@@ -6,10 +6,20 @@ export const fetchPokemons = async (
 ): Promise<PaginatedResult<Pokemon>> => {
   const { type, sortBy = 'name', order = 'asc', search, page = 1, limit = 10 } = params;
 
-  let query = supabase
-    .from('pokemon')
-    .select('*', { count: 'exact' });
-
+let query = supabase
+  .from('pokemon')
+  .select(`
+    id,
+    name,
+    power,
+    life,
+    image,
+    type (
+      id,
+      name
+    )
+  `, { count: 'exact' });
+    
   if (type) {
     query = query.eq('type', type);
   }
@@ -27,14 +37,14 @@ export const fetchPokemons = async (
   query = query.range(from, to);
 
   const { data, count, error } = await query;
-
+console.log(data)
   if (error) throw error;
 
   return {
     total: count,
     page,
     pageSize: limit,
-    results: data as Pokemon[],
+    results: data as any,
   };
 };
 
@@ -48,7 +58,7 @@ export const updatePokemonById = async (
       .eq('id', id)
       .select()
       .single();
-  
+    console.log(data)
     if (error) {
       console.error('Supabase update error:', error.message);
       return null;
